@@ -20,7 +20,7 @@ public class KeyMapping : MonoBehaviour
             //Debug.Log(binding.action); // says the action name
             string str = binding.path.Substring(binding.path.LastIndexOf('/') + 1); // checks if it's a keybinding and not another property
             // gets the binding name
-            if (str.Contains("MovementBindings")) continue;
+            if (binding.name.Contains("Movemen")) continue;
             // Debug.Log(binding.path.Substring(binding.path.LastIndexOf('/') + 1)); // says the binding name
             Instantiate<Key>(keyMappingPreFab, Vector3.zero, Quaternion.identity, this.transform).onCreation(binding.name, str);
         }

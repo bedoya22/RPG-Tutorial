@@ -24,9 +24,9 @@ public class KeyMapping : MonoBehaviour
             // Debug.Log(binding.path.Substring(binding.path.LastIndexOf('/') + 1)); // says the binding name
             Instantiate<Key>(keyMappingPreFab, Vector3.zero, Quaternion.identity, this.transform).onCreation(binding.name, str);
         }
-
-
-
+        // Debug.Log(playerInput.currentActionMap.ToString());
+        // playerInput.SwitchCurrentActionMap("UI"); // change action map in the defaultinput system from Player to UI
+        // Debug.Log(playerInput.currentActionMap.ToString());
 
     }
 

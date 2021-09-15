@@ -29,7 +29,7 @@ public class @GameplayInput : IInputActionCollection, IDisposable
             ],
             ""bindings"": [
                 {
-                    ""name"": ""2D Vector"",
+                    ""name"": ""MovementBindings"",
                     ""id"": ""c4d4f9fd-d32a-488d-b17b-aef686e7923d"",
                     ""path"": ""2DVector"",
                     ""interactions"": """",
@@ -40,7 +40,7 @@ public class @GameplayInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""up"",
+                    ""name"": ""Forward"",
                     ""id"": ""18adcd84-03b9-4073-8f6f-f4970f758257"",
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
@@ -51,7 +51,7 @@ public class @GameplayInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""down"",
+                    ""name"": ""Backward"",
                     ""id"": ""b06c118c-0a26-43d6-b957-cc1eb1ce88f2"",
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",

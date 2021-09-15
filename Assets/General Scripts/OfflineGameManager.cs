@@ -4,15 +4,23 @@ using UnityEngine;
 
 public class OfflineGameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    #region Singleton
+    private static OfflineGameManager _instance;
+    public static OfflineGameManager Instance
     {
-        
+        get { return _instance; }
     }
-
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        DontDestroyOnLoad(gameObject);
+        _instance = this;
     }
+    #endregion
+    #region Cursor Hidder
+    public void CursorMode(bool isActive, CursorLockMode typeCursor)
+    {
+        Cursor.visible = isActive;
+        Cursor.lockState = typeCursor;
+    }
+    #endregion
 }

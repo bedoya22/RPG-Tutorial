@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LevelLoader : MonoBehaviour
 {
-    int firstTimeOpenApplication = 1;
     const string FirstTime = "FIRST_TIME_OPEN_APPLICATION";
+    [SerializeField] private Slider loadingSlider;
     void Start()
     {
         // Never being init
@@ -19,7 +20,7 @@ public class LevelLoader : MonoBehaviour
         if (PlayerPrefs.GetInt(FirstTime, 1) == 1)
         {
             PlayerPrefs.SetInt(FirstTime, 0);
-            //Firsttime open the game
+            StartCoroutine(LoadAsyncRequestScene(SceneManager.GetActiveScene().buildIndex + 1, 2f));
             // to do first image to load
         }
         else
@@ -28,6 +29,18 @@ public class LevelLoader : MonoBehaviour
         }
     }
 
+
+    IEnumerator LoadAsyncRequestScene(int buildIndex, float timeToWait)
+    {
+        yield return new WaitForSeconds(timeToWait);
+        AsyncOperation LoadingScene = SceneManager.LoadSceneAsync(buildIndex);
+        while (!LoadingScene.isDone)
+        {
+            loadingSlider.value = Mathf.Clamp01(LoadingScene.progress / 0.9f);
+            OfflineGameManager.Instance.CursorMode(true, CursorLockMode.None);
+            yield return null;
+        }
+    }
     private void FirstTimeApp()
     {
         // to do setting image and etc

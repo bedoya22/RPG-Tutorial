@@ -13,7 +13,7 @@ public class KeyMapping : MonoBehaviour
     {
         // getting what type of hardware does he use Keyboard or gamepad
         Debug.Log(playerInput.currentControlScheme);
-
+        int bindingsIndex = 1; // skipping the binding compossite
         //Creating the new GameplayInput class as in the asset inputsystem
         GameplayInput gamePlayInput = new GameplayInput();
         // Iteration through each binding. this allows also you not only get the specific binding but also passing it's path to change later
@@ -25,7 +25,8 @@ public class KeyMapping : MonoBehaviour
             string str = InputControlPath.ToHumanReadableString(binding.effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
             Debug.Log(str);
             //binding.name is the binding name that is written in the gameplayinput.cs generated file
-            Instantiate<Key>(keyMappingPreFab, Vector3.zero, Quaternion.identity, this.transform).UpdateText(binding.name, str, binding.path);
+            Instantiate<Key>(keyMappingPreFab, Vector3.zero, Quaternion.identity, this.transform).UpdateText(binding.name, str, bindingsIndex);
+            bindingsIndex++;
         }
 
     }

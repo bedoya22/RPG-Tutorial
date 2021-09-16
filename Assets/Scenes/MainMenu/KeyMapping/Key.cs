@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class Key : MonoBehaviour
 {
     public Text action, keyButton;
-    private string bindingPath; // the index of the binding effective path
+    private int bindingIndex; // the index of the binding effective path to change for a specific key
 
     [SerializeField] private InputActionReference movement;
     [SerializeField] private Button button;
@@ -21,35 +21,36 @@ public class Key : MonoBehaviour
         movement.action.Disable();
         button.interactable = false;
         this.keyButton.text = "Waiting for input";
-        rebindingOperation = movement.action.PerformInteractiveRebinding().WithControlsExcluding("Mouse").
+        rebindingOperation = movement.action.PerformInteractiveRebinding(bindingIndex).WithControlsExcluding("Mouse").
         OnMatchWaitForAnother(0.1f).OnComplete(operation => RebindComplete()).Start();
 
     }
 
     private void RebindComplete()
     {
-        bindingPath =
-        this.keyButton.text = InputControlPath.ToHumanReadableString(bindingPath, InputControlPath.HumanReadableStringOptions.OmitDevice);
+        this.keyButton.text = InputControlPath.ToHumanReadableString(movement.action.bindings[bindingIndex].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
         button.interactable = true;
         DebugKeyBindings();
         rebindingOperation.Dispose();
         if (rebindingOperation.completed)
+        {
             movement.action.Enable();
+        }
     }
-    public void UpdateText(string action, string keyButton, string path)
+    public void UpdateText(string action, string keyButton, int index)
     {
         this.action.text = action;
         this.keyButton.text = keyButton;
-        this.bindingPath = path;
+        this.bindingIndex = index;
     }
     private void DebugKeyBindings()
     {
-        foreach (InputBinding binding in movement.action.bindings)
+        for (int binding = 0; binding < movement.action.bindings.Count; binding++)
         {
-            if (binding.isComposite) continue; // checks if it's not a binding but a composite type like 2DVector
+            if (movement.action.bindings[binding].isComposite) continue; // checks if it's not a binding but a composite type like 2DVector
 
             //Getting the binding name to change the text later
-            string str = InputControlPath.ToHumanReadableString(binding.effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
+            string str = InputControlPath.ToHumanReadableString(movement.action.bindings[binding].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
             Debug.Log(str);
         }
     }

@@ -18,20 +18,23 @@ public class Key : MonoBehaviour
 
     public void StartRebinding()
     {
+        movement.action.Disable();
         button.interactable = false;
         this.keyButton.text = "Waiting for input";
-        rebindingOperation = movement.action.PerformInteractiveRebinding().
+        rebindingOperation = movement.action.PerformInteractiveRebinding().WithControlsExcluding("Mouse").
         OnMatchWaitForAnother(0.1f).OnComplete(operation => RebindComplete()).Start();
 
     }
 
     private void RebindComplete()
     {
+        bindingPath =
         this.keyButton.text = InputControlPath.ToHumanReadableString(bindingPath, InputControlPath.HumanReadableStringOptions.OmitDevice);
         button.interactable = true;
         DebugKeyBindings();
-        movement.action.ApplyBindingOverride(movement.action.bindings[0]);
         rebindingOperation.Dispose();
+        if (rebindingOperation.completed)
+            movement.action.Enable();
     }
     public void UpdateText(string action, string keyButton, string path)
     {
@@ -46,8 +49,11 @@ public class Key : MonoBehaviour
             if (binding.isComposite) continue; // checks if it's not a binding but a composite type like 2DVector
 
             //Getting the binding name to change the text later
-            string str = InputControlPath.ToHumanReadableString(binding.path, InputControlPath.HumanReadableStringOptions.OmitDevice);
+            string str = InputControlPath.ToHumanReadableString(binding.effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
             Debug.Log(str);
         }
     }
 }
+
+
+// to do change binding for a specific playerinput asset

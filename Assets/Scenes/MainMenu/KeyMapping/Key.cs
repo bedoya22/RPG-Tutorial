@@ -18,6 +18,10 @@ public class Key : MonoBehaviour
 
     public void StartRebinding()
     {
+        if (movement.action.enabled == false)
+        {
+            return;
+        }
         movement.action.Disable();
         button.interactable = false;
         this.keyButton.text = "Waiting for input";

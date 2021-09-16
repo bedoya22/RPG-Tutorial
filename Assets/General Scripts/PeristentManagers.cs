@@ -24,7 +24,6 @@ public class PeristentManagers : MonoBehaviour
 
     private void SpawnPersistentObjects()
     {
-        GameObject persistentObject = Instantiate(persistentObjectPrefab);
-        DontDestroyOnLoad(persistentObject);
+        DontDestroyOnLoad(Instantiate(persistentObjectPrefab));
     }
 }

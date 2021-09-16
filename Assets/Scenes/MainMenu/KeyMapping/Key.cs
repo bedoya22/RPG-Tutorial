@@ -34,6 +34,8 @@ public class Key : MonoBehaviour
         rebindingOperation.Dispose();
         if (rebindingOperation.completed)
         {
+            string rebinds = movement.action.SaveBindingOverridesAsJson();
+            PlayerPrefs.SetString("Rebinds", rebinds);
             movement.action.Enable();
         }
     }

@@ -16,6 +16,9 @@ public class KeyMapping : MonoBehaviour
         int bindingsIndex = 1; // skipping the binding compossite
         //Creating the new GameplayInput class as in the asset inputsystem
         GameplayInput gamePlayInput = new GameplayInput();
+        var rebinds = PlayerPrefs.GetString("Rebinds");
+        if (!string.IsNullOrEmpty(rebinds))
+            gamePlayInput.Player.Movement.LoadBindingOverridesFromJson(rebinds);
         // Iteration through each binding. this allows also you not only get the specific binding but also passing it's path to change later
         foreach (InputBinding binding in gamePlayInput.Player.Movement.bindings)
         {

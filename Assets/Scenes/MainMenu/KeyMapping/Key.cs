@@ -28,9 +28,12 @@ public class Key : MonoBehaviour
 
     private void RebindComplete()
     {
+        if (CheckForDuplicates())
+        {
+            movement.action.RemoveBindingOverride(bindingIndex); // removing if duplicates
+        }
         this.keyButton.text = InputControlPath.ToHumanReadableString(movement.action.bindings[bindingIndex].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
         button.interactable = true;
-        DebugKeyBindings();
         rebindingOperation.Dispose();
         if (rebindingOperation.completed)
         {
@@ -45,7 +48,21 @@ public class Key : MonoBehaviour
         this.keyButton.text = keyButton;
         this.bindingIndex = index;
     }
-    private void DebugKeyBindings()
+    private bool CheckForDuplicates()
+    {
+        InputBinding bindingToCheck = movement.action.bindings[bindingIndex];
+        foreach (InputBinding binding in movement.action.bindings)
+        {
+            if (movement.action.GetBindingIndex(binding) == bindingIndex)
+                continue;
+
+            if (bindingToCheck.effectivePath == binding.effectivePath)
+                return true;
+        }
+        return false;
+    }
+
+    private void DebugBindings()
     {
         for (int binding = 0; binding < movement.action.bindings.Count; binding++)
         {

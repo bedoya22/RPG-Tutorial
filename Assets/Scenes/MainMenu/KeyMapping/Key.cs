@@ -80,4 +80,5 @@ public class Key : MonoBehaviour
 }
 
 
+// Debug.Log(rebindingOperation.selectedControl.device); // getting the deviece name
 // to do change binding for a specific playerinput asset

@@ -24,8 +24,6 @@ public class ServerInformation : NetworkBehaviour
                     };
 
         // Register server
-        advertConnection.StartAdvertisment(data);
-        Debug.Log(advertConnection.ToString());
     }
 
 }

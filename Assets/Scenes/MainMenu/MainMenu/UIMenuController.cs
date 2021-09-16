@@ -2,13 +2,68 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIMenuController : MonoBehaviour
 {
-    private void Awake()
+    public Slider sFX;
+    public Slider music;
+
+    private void Start()
     {
+        AudioConfiguration();
         PanelsConfiguration();
     }
+
+
+    #region Music and SFX Controls
+    private void AudioConfiguration()
+    {
+        // Setting Sliders values and Adding listeners for the value change to change the volume
+        if (sFX != null && music != null)
+        {
+            sFX.onValueChanged.AddListener(delegate { onMusicChange(AudioType.SFXVolume, sFX.value); });
+            music.onValueChanged.AddListener(delegate { onMusicChange(AudioType.MusicVolume, music.value); });
+            VolumeSliderUpdate();
+        }
+        else
+        {
+            foreach (Slider slider in FindObjectsOfType<Slider>())
+            {
+                switch (slider.gameObject.name)
+                {
+                    case "Music":
+                        music = slider;
+                        break;
+                    case "SFX":
+                        sFX = slider;
+                        break;
+                }
+
+            }
+            Debug.LogWarning("Error need to assign sfx and music");
+        }
+    }
+
+    public void VolumeSliderUpdate()
+    {
+        if (AudioManager.Instance == null)
+        {
+            Debug.Log("Null");
+            Debug.Break();
+        }
+        sFX.value = AudioManager.Instance.GetAudio(AudioType.SFXVolume);
+        music.value = AudioManager.Instance.GetAudio(AudioType.MusicVolume);
+    }
+
+    /// <summary>
+    /// On Changing the values of the sliders for the volume
+    /// </summary>
+    private void onMusicChange(AudioType type, float volume)
+    {
+        AudioManager.Instance.SetAudioVolume(type, volume);
+    }
+    #endregion
     [SerializeField] private List<UIPanel> panels = new List<UIPanel>();
     [SerializeField] private UIPanel currentActive = null;
     private void PanelsConfiguration()
